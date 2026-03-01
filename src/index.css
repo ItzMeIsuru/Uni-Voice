@@ -923,7 +923,7 @@ body::before {
     flex-wrap: wrap;
     height: auto;
     gap: 1rem;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .logo-container h1 {
@@ -933,12 +933,9 @@ body::before {
   .main-nav {
     margin-left: 0;
     width: 100%;
-    justify-content: space-around;
-    flex-wrap: nowrap;
-    gap: 0;
-    order: 3;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .nav-link {
@@ -947,9 +944,9 @@ body::before {
   }
 
   .header-controls {
-    width: auto;
-    justify-content: flex-end;
-    margin-top: 0;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
   }
 
   .location-badge span {
@@ -1002,14 +999,14 @@ body::before {
   }
 
   .ai-sidebar {
-    position: static;
-    height: auto;
-    max-height: none;
-    margin-bottom: 2rem;
+    position: static !important;
+    height: auto !important;
+    max-height: none !important;
+    margin-bottom: 2rem !important;
   }
 
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   .content-area {
