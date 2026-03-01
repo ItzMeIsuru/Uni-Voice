@@ -348,6 +348,16 @@ function App() {
     setAiSuggestion('');
     setIsAILoading(true);
 
+    // Smooth scroll to the AI panel on mobile devices
+    setTimeout(() => {
+      if (window.innerWidth <= 768) {
+        const aiSidebar = document.querySelector('.ai-sidebar');
+        if (aiSidebar) {
+          aiSidebar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }, 100);
+
     try {
       const res = await fetch('/.netlify/functions/ai', {
         method: 'POST',
