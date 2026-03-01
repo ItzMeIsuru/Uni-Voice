@@ -56,7 +56,7 @@ const ReplyItem = ({ reply, allReplies, deviceId, onDeleteReply, onReplySubmit, 
                 )}
             </div>
             {children.length > 0 && (
-                <div className="nested-replies" style={{ marginLeft: '1.5rem', borderLeft: '2px solid var(--border-color)', paddingLeft: '1rem', marginTop: '0.5rem' }}>
+                <div className="nested-replies" style={{ marginLeft: '1.5rem', borderLeft: '2px solid var(--border-color)', paddingLeft: '1rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
                     {children.map(child => (
                         <ReplyItem
                             key={child.id}

@@ -724,6 +724,7 @@ body::before {
   padding: 1rem;
   border-radius: var(--border-radius-md);
   border-left: 3px solid var(--accent-transparent);
+  margin-bottom: 0.5rem;
 }
 
 .reply-header {
