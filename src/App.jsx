@@ -299,7 +299,18 @@ function App() {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to post issue. Please check the backend connection.");
+        let errorMsg = "Failed to post issue. Please check the backend connection.";
+        try {
+          const errData = await res.json();
+          if (errData.error === "Profanity is not allowed." || res.status === 400) {
+            errorMsg = "Don't use offensive language";
+          } else if (errData.error) {
+            errorMsg = errData.error;
+          }
+        } catch (e) {
+          // Fall back to default message if JSON parsing fails
+        }
+        throw new Error(errorMsg);
       }
 
       const newPost = await res.json();
