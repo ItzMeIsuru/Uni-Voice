@@ -1,0 +1,161 @@
+import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { X, Sparkles, Loader2, BarChart2, CheckCircle, MessageSquare, Users, PieChart } from 'lucide-react';
+
+const RightSidebar = ({ problems, selectedProblem, aiSuggestion, isAILoading, onCloseAI, onPollVote, deviceId }) => {
+    // Calculate Stats
+    const totalIssues = problems.length;
+    const resolvedIssues = problems.filter(p => p.solved).length;
+    const activeDiscussions = problems.filter(p => p.replies && p.replies.length > 0).length;
+
+    // Estimate unique users by counting unique creator_ids in problems and replies
+    const uniqueUsers = new Set();
+    problems.forEach(p => {
+        if (p.creator_id) uniqueUsers.add(p.creator_id);
+        if (p.replies) {
+            p.replies.forEach(r => {
+                if (r.creator_id) uniqueUsers.add(r.creator_id);
+            });
+        }
+    });
+
+    const isPollActive = selectedProblem && selectedProblem.poll_question;
+    const isAiActive = selectedProblem || isAILoading || aiSuggestion;
+
+    return (
+        <div className="right-sidebar">
+            {/* Stats Dashboard */}
+            <div className="stats-dashboard glass-panel">
+                <div className="stats-header">
+                    <BarChart2 size={18} style={{ color: 'var(--accent-color)' }} />
+                    <h3>Community Stats</h3>
+                </div>
+                <div className="stats-grid">
+                    <div className="stat-card">
+                        <div className="stat-icon" style={{ background: 'rgba(99, 102, 241, 0.1)' }}>
+                            <span style={{ fontSize: '1.2rem' }}>📌</span>
+                        </div>
+                        <div className="stat-info">
+                            <span className="stat-value">{totalIssues}</span>
+                            <span className="stat-label">Total Issues</span>
+                        </div>
+                    </div>
+                    <div className="stat-card">
+                        <div className="stat-icon" style={{ background: 'rgba(34, 197, 94, 0.1)' }}>
+                            <span style={{ fontSize: '1.2rem' }}>✅</span>
+                        </div>
+                        <div className="stat-info">
+                            <span className="stat-value">{resolvedIssues}</span>
+                            <span className="stat-label">Resolved</span>
+                        </div>
+                    </div>
+                    <div className="stat-card">
+                        <div className="stat-icon" style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
+                            <span style={{ fontSize: '1.2rem' }}>🔥</span>
+                        </div>
+                        <div className="stat-info">
+                            <span className="stat-value">{activeDiscussions}</span>
+                            <span className="stat-label">Discussions</span>
+                        </div>
+                    </div>
+                    <div className="stat-card">
+                        <div className="stat-icon" style={{ background: 'rgba(234, 179, 8, 0.1)' }}>
+                            <span style={{ fontSize: '1.2rem' }}>👥</span>
+                        </div>
+                        <div className="stat-info">
+                            <span className="stat-value">{uniqueUsers.size || 1}</span>
+                            <span className="stat-label">Total Users</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Poll Widget */}
+            {isPollActive && (
+                <div className="poll-widget glass-panel slide-down" style={{ marginTop: '1rem' }}>
+                    <div className="poll-header">
+                        <PieChart size={18} style={{ color: 'var(--accent-color)' }} />
+                        <h3>Community Poll</h3>
+                    </div>
+                    <p className="poll-question">{selectedProblem.poll_question}</p>
+
+                    <div className="poll-actions">
+                        <button
+                            className={`poll-btn yes ${selectedProblem.user_poll_vote === 'yes' ? 'active' : ''}`}
+                            onClick={() => onPollVote(selectedProblem.id, 'yes')}
+                        >
+                            Yes <span>({selectedProblem.poll_yes || 0})</span>
+                        </button>
+                        <button
+                            className={`poll-btn no ${selectedProblem.user_poll_vote === 'no' ? 'active' : ''}`}
+                            onClick={() => onPollVote(selectedProblem.id, 'no')}
+                        >
+                            No <span>({selectedProblem.poll_no || 0})</span>
+                        </button>
+                    </div>
+                    <div className="poll-context-label">
+                        Poll generated by AI based on the selected issue.
+                    </div>
+                </div>
+            )}
+
+            {/* AI Assistant */}
+            {isAiActive ? (
+                <div className="ai-sidebar active slide-down" style={{ marginTop: '1rem', position: 'relative', right: 0, top: 0, height: 'auto', minHeight: '300px' }}>
+                    <div className="ai-header">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <Sparkles size={20} className="ai-sparkle-icon pulse-button" style={{ color: 'var(--accent-color)', borderRadius: '50%' }} />
+                            <h3>AI Suggestions</h3>
+                        </div>
+                        {onCloseAI && (
+                            <button className="icon-btn" onClick={onCloseAI} title="Close AI Panel">
+                                <X size={20} />
+                            </button>
+                        )}
+                    </div>
+
+                    <div className="ai-content-area" style={{ flex: 1 }}>
+                        {selectedProblem && (
+                            <div className="ai-context-box">
+                                <span className="ai-context-label">Analyzing Issue:</span>
+                                <h4 className="ai-context-title">{selectedProblem.title}</h4>
+                            </div>
+                        )}
+
+                        {isAILoading ? (
+                            <div className="ai-loading-state">
+                                <Loader2 size={32} className="spinning-loader" />
+                                <p>Gemini is thinking...</p>
+                                <span className="loading-subtitle">Analyzing the problem and generating constructive solutions.</span>
+                            </div>
+                        ) : aiSuggestion ? (
+                            <div className="ai-markdown-content">
+                                <ReactMarkdown>{aiSuggestion}</ReactMarkdown>
+                            </div>
+                        ) : (
+                            <div className="ai-empty-state" style={{ marginTop: '2rem' }}>
+                                <p>Click "Ask AI" on the post to generate solutions.</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {aiSuggestion && !isAILoading && (
+                        <div className="ai-footer">
+                            <p>Generated by Google Gemini AI. These are automated suggestions and should be verified.</p>
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <div className="ai-sidebar empty-state-container" style={{ marginTop: '1rem', position: 'relative', right: 0, top: 0, height: '300px' }}>
+                    <div className="ai-empty-state">
+                        <Sparkles size={48} className="ai-empty-icon" />
+                        <h3>AI Assistant & Polls</h3>
+                        <p>Select any issue to participate in its poll and get smart suggestions from Gemini.</p>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default RightSidebar;
