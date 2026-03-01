@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { ArrowUp, ArrowDown, MessageCircle, Clock, Send, Crown, Trash, CheckCircle, Flame, Sparkles } from 'lucide-react';
+import ConfirmModal from './ConfirmModal';
 
 const ReplyItem = ({ reply, allReplies, deviceId, onDeleteReply, onReplySubmit, problemId }) => {
     const [isReplying, setIsReplying] = useState(false);
     const [replyText, setReplyText] = useState('');
+    const [showConfirm, setShowConfirm] = useState(false);
 
     const children = allReplies.filter(r => r.parent_reply_id === reply.id);
 
@@ -32,11 +34,7 @@ const ReplyItem = ({ reply, allReplies, deviceId, onDeleteReply, onReplySubmit, 
                         <button
                             className="action-btn"
                             style={{ color: 'var(--downvote-color)', padding: '0', marginLeft: 'auto' }}
-                            onClick={() => {
-                                if (window.confirm('Are you sure you want to delete this reply?')) {
-                                    onDeleteReply(problemId, reply.id);
-                                }
-                            }}
+                            onClick={() => setShowConfirm(true)}
                             title="Delete your reply"
                         >
                             <Trash size={14} />
@@ -74,6 +72,15 @@ const ReplyItem = ({ reply, allReplies, deviceId, onDeleteReply, onReplySubmit, 
                     ))}
                 </div>
             )}
+            <ConfirmModal
+                isOpen={showConfirm}
+                onClose={() => setShowConfirm(false)}
+                onConfirm={() => {
+                    onDeleteReply(problemId, reply.id);
+                    setShowConfirm(false);
+                }}
+                message="Are you sure you want to delete this reply?"
+            />
         </div>
     );
 };
@@ -81,6 +88,7 @@ const ReplyItem = ({ reply, allReplies, deviceId, onDeleteReply, onReplySubmit, 
 const ProblemCard = ({ problem, onUpvote, onDownvote, isTop, rank, onReplySubmit, deviceId, onDelete, onDeleteReply, onSolve, onAskAI, onProblemSelect, isSelected }) => {
     const [showReplies, setShowReplies] = useState(false);
     const [replyText, setReplyText] = useState('');
+    const [showConfirm, setShowConfirm] = useState(false);
 
     const handleReply = () => {
         if (replyText.trim()) {
@@ -160,9 +168,7 @@ const ProblemCard = ({ problem, onUpvote, onDownvote, isTop, rank, onReplySubmit
                                         style={{ color: 'var(--downvote-color)', padding: '0.2rem 0.5rem' }}
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            if (window.confirm('Are you sure you want to delete this post?')) {
-                                                onDelete(problem.id);
-                                            }
+                                            setShowConfirm(true);
                                         }}
                                         title="Delete your post"
                                     >
@@ -233,6 +239,15 @@ const ProblemCard = ({ problem, onUpvote, onDownvote, isTop, rank, onReplySubmit
                     )}
                 </div>
             </div>
+            <ConfirmModal
+                isOpen={showConfirm}
+                onClose={() => setShowConfirm(false)}
+                onConfirm={() => {
+                    onDelete(problem.id);
+                    setShowConfirm(false);
+                }}
+                message="Are you sure you want to delete this post?"
+            />
         </div>
     );
 };

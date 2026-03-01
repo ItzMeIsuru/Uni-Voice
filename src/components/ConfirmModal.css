@@ -1,0 +1,70 @@
+.confirm-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.confirm-modal-content {
+    background: var(--bg-surface);
+    padding: 1.5rem 2rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.confirm-message {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+}
+
+.confirm-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.confirm-btn {
+    padding: 0.6rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    border: none;
+}
+
+.yes-btn {
+    background-color: var(--upvote-color);
+    color: white;
+}
+
+.yes-btn:hover {
+    background-color: #1e8f4c;
+    /* slightly darker green */
+    transform: translateY(-2px);
+}
+
+.no-btn {
+    background-color: var(--downvote-color);
+    color: white;
+}
+
+.no-btn:hover {
+    background-color: #b82d31;
+    /* slightly darker red */
+    transform: translateY(-2px);
+}
