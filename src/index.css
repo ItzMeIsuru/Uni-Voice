@@ -1276,9 +1276,9 @@ body::before {
   /* Force 2 columns that squish infinitely */
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.6rem;
   background: var(--bg-inset);
-  padding: 0.6rem;
+  padding: 0.6rem 0.5rem;
   border-radius: var(--border-radius-md);
   border: 1px solid rgba(255, 255, 255, 0.05);
   min-width: 0;
@@ -1311,8 +1311,7 @@ body::before {
   font-weight: 600;
   text-transform: uppercase;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  letter-spacing: -0.2px;
 }
 
 /* --- Poll Widget --- */
