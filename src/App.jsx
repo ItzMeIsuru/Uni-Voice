@@ -42,6 +42,7 @@ function App() {
   // Live Database State
   const [problems, setProblems] = useState([]);
   const [deviceId, setDeviceId] = useState('');
+  const [totalVisitors, setTotalVisitors] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
   const [filter, setFilter] = useState('All');
@@ -77,7 +78,7 @@ function App() {
 
       // Re-sync user's previous votes to show up/down highlights correctly
       if (deviceId) {
-        const [voteRes, pollVoteRes] = await Promise.all([
+        const [voteRes, pollVoteRes, visitsRes] = await Promise.all([
           fetch('/.netlify/functions/api/sync_votes', {
             method: 'POST',
             body: JSON.stringify({ device_id: deviceId })
@@ -85,11 +86,24 @@ function App() {
           fetch('/.netlify/functions/api/sync_poll_votes', {
             method: 'POST',
             body: JSON.stringify({ device_id: deviceId })
+          }),
+          fetch('/.netlify/functions/api/visitors', {
+            method: 'POST',
+            body: JSON.stringify({ device_id: deviceId })
           })
         ]);
 
         const myVotes = await voteRes.json();
         const myPollVotes = await pollVoteRes.json();
+
+        try {
+          const visitorData = await visitsRes.json();
+          if (visitorData && visitorData.total_visitors) {
+            setTotalVisitors(visitorData.total_visitors);
+          }
+        } catch (e) {
+          console.error("Failed to parse visitor data", e);
+        }
 
         // Map DB problem rows into the frontend state format
         const enrichedData = data.map(p => {
@@ -536,6 +550,7 @@ function App() {
           }}
           onPollVote={handlePollVote}
           deviceId={deviceId}
+          totalVisitors={totalVisitors}
         />
       </div>
 

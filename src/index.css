@@ -923,7 +923,7 @@ body::before {
     flex-wrap: wrap;
     height: auto;
     gap: 1rem;
-    justify-content: center;
+    justify-content: space-between;
   }
 
   .logo-container h1 {
@@ -933,9 +933,12 @@ body::before {
   .main-nav {
     margin-left: 0;
     width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    gap: 0;
+    order: 3;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   .nav-link {
@@ -944,9 +947,9 @@ body::before {
   }
 
   .header-controls {
-    width: 100%;
-    justify-content: center;
-    margin-top: 0.5rem;
+    width: auto;
+    justify-content: flex-end;
+    margin-top: 0;
   }
 
   .location-badge span {

@@ -249,6 +249,26 @@ export const handler = async (event, context) => {
             return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
         }
 
+        // --- TRACK AND GET TOTAL VISITORS ---
+        if (event.httpMethod === 'POST' && path === 'visitors') {
+            const { device_id } = JSON.parse(event.body);
+
+            if (device_id) {
+                // Insert the visitor if they don't exist yet (ON CONFLICT DO NOTHING)
+                await sql`
+                    INSERT INTO visitors (device_id) 
+                    VALUES (${device_id}) 
+                    ON CONFLICT (device_id) DO NOTHING
+                `;
+            }
+
+            // Return the total count of unique visitors
+            const countRes = await sql`SELECT COUNT(*) FROM visitors`;
+            const totalVisitors = parseInt(countRes[0].count, 10);
+
+            return { statusCode: 200, headers, body: JSON.stringify({ total_visitors: totalVisitors }) };
+        }
+
         return { statusCode: 404, headers, body: "Not found" };
 
     } catch (error) {

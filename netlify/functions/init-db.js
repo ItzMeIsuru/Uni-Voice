@@ -72,6 +72,14 @@ export const handler = async (event, context) => {
             )
         `;
 
+        // 5. Global Visitors Table (Tracks unique site visitors anonymously)
+        await sql`
+            CREATE TABLE IF NOT EXISTS visitors (
+                device_id VARCHAR(100) PRIMARY KEY,
+                first_seen TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            )
+        `;
+
         // Optional: Insert some initial seed data if the table is totally empty
         const countRes = await sql`SELECT COUNT(*) FROM problems`;
         const count = parseInt(countRes[0].count, 10);

@@ -2,22 +2,11 @@ import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { X, Sparkles, Loader2, BarChart2, CheckCircle, MessageSquare, Users, PieChart } from 'lucide-react';
 
-const RightSidebar = ({ problems, selectedProblem, aiSuggestion, isAILoading, onCloseAI, onPollVote, deviceId }) => {
+const RightSidebar = ({ problems, selectedProblem, aiSuggestion, isAILoading, onCloseAI, onPollVote, deviceId, totalVisitors }) => {
     // Calculate Stats
     const totalIssues = problems.length;
     const resolvedIssues = problems.filter(p => p.solved).length;
     const activeDiscussions = problems.filter(p => p.replies && p.replies.length > 0).length;
-
-    // Estimate unique users by counting unique creator_ids in problems and replies
-    const uniqueUsers = new Set();
-    problems.forEach(p => {
-        if (p.creator_id) uniqueUsers.add(p.creator_id);
-        if (p.replies) {
-            p.replies.forEach(r => {
-                if (r.creator_id) uniqueUsers.add(r.creator_id);
-            });
-        }
-    });
 
     const isPollActive = selectedProblem && selectedProblem.poll_question;
     const isAiActive = selectedProblem || isAILoading || aiSuggestion;
@@ -63,7 +52,7 @@ const RightSidebar = ({ problems, selectedProblem, aiSuggestion, isAILoading, on
                             <span style={{ fontSize: '1.2rem' }}>👥</span>
                         </div>
                         <div className="stat-info">
-                            <span className="stat-value">{uniqueUsers.size || 1}</span>
+                            <span className="stat-value">{totalVisitors}</span>
                             <span className="stat-label">Total Users</span>
                         </div>
                     </div>
