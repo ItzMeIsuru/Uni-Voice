@@ -994,7 +994,26 @@ body::before {
     color: var(--accent-color);
   }
 
-  /* Cards */
+  .right-sidebar {
+    width: 100%;
+  }
+
+  .ai-sidebar {
+    position: static;
+    height: auto;
+    max-height: none;
+    margin-bottom: 2rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .content-area {
+    width: 100%;
+    margin: 0;
+  }
+
   .problem-layout {
     flex-direction: column;
   }
@@ -1218,7 +1237,7 @@ body::before {
 
 /* --- Right Sidebar & Stats --- */
 .right-sidebar {
-  width: 380px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
