@@ -1247,8 +1247,9 @@ body::before {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--shadow-sm);
   padding: 1.5rem;
+  overflow: hidden;
 }
 
 .stats-header {
@@ -1265,19 +1266,22 @@ body::before {
 }
 
 .stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
 .stat-card {
+  flex: 1 1 calc(50% - 1rem);
+  /* Force 2 columns that squish infinitely */
   display: flex;
   align-items: center;
   gap: 0.8rem;
   background: var(--bg-inset);
-  padding: 0.8rem;
+  padding: 0.6rem;
   border-radius: var(--border-radius-md);
   border: 1px solid rgba(255, 255, 255, 0.05);
+  min-width: 0;
 }
 
 .stat-icon {
@@ -1302,10 +1306,13 @@ body::before {
 }
 
 .stat-label {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: var(--text-muted);
   font-weight: 600;
   text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* --- Poll Widget --- */
