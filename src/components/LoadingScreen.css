@@ -1,0 +1,79 @@
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-app);
+    z-index: 9999;
+}
+
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.loading-logo {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1;
+}
+
+.loading-logo span {
+    color: var(--accent-color);
+}
+
+.loading-bar-track {
+    width: 280px;
+    height: 4px;
+    background-color: var(--bg-inset);
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.loading-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: var(--text-secondary);
+    width: 0%;
+    border-radius: 2px;
+    animation: fillBar 1.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+@keyframes fillBar {
+    0% {
+        width: 0%;
+    }
+
+    20% {
+        width: 40%;
+    }
+
+    60% {
+        width: 65%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+.loading-subtext {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin: 0;
+}

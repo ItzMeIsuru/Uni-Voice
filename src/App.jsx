@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import { Plus, MapPin, Sun, Moon, Sunset, ChevronDown, ChevronRight } from 'lucide-react';
 import CreatePostModal from './components/CreatePostModal';
 import RightSidebar from './components/RightSidebar';
+import LoadingScreen from './components/LoadingScreen';
 
 import Home from './pages/Home';
 import Top from './pages/Top';
@@ -71,6 +72,7 @@ function App() {
 
   // --- 2. Fetch Live Database ---
   const fetchProblems = async () => {
+    const startTime = Date.now();
     try {
       const res = await fetch('/.netlify/functions/api');
       if (!res.ok) throw new Error('Network response was not ok');
@@ -128,7 +130,13 @@ function App() {
     } catch (error) {
       console.error("Failed to load problems from db:", error);
     } finally {
-      setIsLoading(false);
+      const elapsed = Date.now() - startTime;
+      const minDelay = 1500;
+      if (elapsed < minDelay) {
+        setTimeout(() => setIsLoading(false), minDelay - elapsed);
+      } else {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -439,11 +447,7 @@ function App() {
   };
 
   if (isLoading) {
-    return (
-      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-        Loading Campus Voice...
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (

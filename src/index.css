@@ -108,23 +108,6 @@ body::before {
   /* Smooth transition for rapid movements */
 }
 
-/* Background Image Overlay */
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -2;
-  background-image: url('/background.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.15;
-  pointer-events: none;
-}
-
 
 /* Utilities */
 .glass-effect {
