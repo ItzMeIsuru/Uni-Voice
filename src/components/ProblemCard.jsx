@@ -32,7 +32,11 @@ const ReplyItem = ({ reply, allReplies, deviceId, onDeleteReply, onReplySubmit, 
                         <button
                             className="action-btn"
                             style={{ color: 'var(--downvote-color)', padding: '0', marginLeft: 'auto' }}
-                            onClick={() => onDeleteReply(problemId, reply.id)}
+                            onClick={() => {
+                                if (window.confirm('Are you sure you want to delete this reply?')) {
+                                    onDeleteReply(problemId, reply.id);
+                                }
+                            }}
                             title="Delete your reply"
                         >
                             <Trash size={14} />
@@ -154,7 +158,12 @@ const ProblemCard = ({ problem, onUpvote, onDownvote, isTop, rank, onReplySubmit
                                     <button
                                         className="action-btn"
                                         style={{ color: 'var(--downvote-color)', padding: '0.2rem 0.5rem' }}
-                                        onClick={(e) => { e.stopPropagation(); onDelete(problem.id); }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (window.confirm('Are you sure you want to delete this post?')) {
+                                                onDelete(problem.id);
+                                            }
+                                        }}
                                         title="Delete your post"
                                     >
                                         <Trash size={16} />
