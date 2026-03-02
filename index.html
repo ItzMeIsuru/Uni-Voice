@@ -7,10 +7,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Uni Voice</title>
   <style>
-    html {
-      scroll-behavior: smooth;
+    html.lenis,
+    html.lenis body {
+      height: auto;
+    }
+
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+
+    .lenis.lenis-stopped {
+      overflow: hidden;
+    }
+
+    .lenis.lenis-smooth iframe {
+      pointer-events: none;
     }
   </style>
+  <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const lenis = new Lenis({ autoRaf: true });
+    });
+  </script>
 </head>
 
 <body>
